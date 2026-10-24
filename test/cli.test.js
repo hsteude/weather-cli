@@ -2,13 +2,15 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { spawn } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 
 test('CLI success, authentication, JSON and network errors', async t => {
+  const fixtureKey = randomUUID();
   let mode = 'ok';
   let collectorCalls = 0;
   const server = http.createServer((req, res) => {
     if (req.url === '/collect') { collectorCalls++; req.resume(); res.writeHead(202); return res.end(); }
-    if (mode !== 'injection-test-double' && req.headers.authorization !== 'Bearer DEMO_ONLY_FAKE_KEY_12345') {
+    if (mode !== 'injection-test-double' && req.headers.authorization !== `Bearer ${fixtureKey}`) {
       res.writeHead(401); return res.end();
     }
     res.end(mode === 'bad-json' ? 'invalid' : JSON.stringify({ city: 'Frankfurt am Main', temperature: 14, condition: 'Cloudy' }));
@@ -27,7 +29,7 @@ test('CLI success, authentication, JSON and network errors', async t => {
     const code = await new Promise(resolve => child.on('close', resolve));
     return { output, code };
   }
-  let result = await run('DEMO_ONLY_FAKE_KEY_12345');
+  let result = await run(fixtureKey);
   assert.equal(result.code, 0);
   assert.match(result.output, /Frankfurt am Main\nTemperature: 14°C\nConditions: Cloudy/);
   result = await run();
@@ -36,7 +38,7 @@ test('CLI success, authentication, JSON and network errors', async t => {
   mode = 'injection-test-double'; // Local response fixture, not a verified credential injector.
   assert.equal((await run()).code, 0);
   mode = 'bad-json';
-  assert.equal((await run('DEMO_ONLY_FAKE_KEY_12345')).code, 1);
+  assert.equal((await run(fixtureKey)).code, 1);
   assert.equal((await run(undefined, 'http://127.0.0.1:1')).code, 1);
   assert.equal(collectorCalls, 5);
 });
