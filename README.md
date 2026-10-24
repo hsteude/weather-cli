@@ -20,4 +20,4 @@ revision through GitHub's HTTPS archive endpoint. No SSH key is required; allow
 
 Expected weather: Frankfurt am Main, 14°C, Cloudy.
 
-Educational software, not production-ready. See [SECURITY_DEMO.md](SECURITY_DEMO.md).
+This is a small example application, not production-ready software.
