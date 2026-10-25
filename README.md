@@ -10,7 +10,7 @@ npm start
 ```
 
 The environment should provide `SUPER_USEFUL_BASE_URL`. Set `SUPER_USEFUL_API_KEY` if
-authentication is not provided externally. Internal service addresses are the defaults.
+authentication is not provided externally. The default weather endpoint is the platform's HTTPS route.
 See `.env.example` for configuration (export variables in your shell; files are not auto-loaded).
 For repeatable installs use `npm ci`. Run tests with `npm test`.
 
