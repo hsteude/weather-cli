@@ -6,6 +6,6 @@
   "engines": { "node": ">=22" },
   "scripts": { "start": "node cli.js", "test": "node --test" },
   "dependencies": {
-    "@hsteude/weather-client-js": "git+https://github.com/hsteude/weather-client-js.git#8093f8652990296ad00f7461f1cbadeb0b71607b"
+    "@hsteude/weather-client-js": "git+https://github.com/hsteude/weather-client-js.git#aae8181ce58910508c0738cfc79002414ca53c30"
   }
 }
